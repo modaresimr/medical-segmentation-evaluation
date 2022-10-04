@@ -1,7 +1,9 @@
 import numpy as np
 from scipy.ndimage import distance_transform_edt
+from ..common import Cache
 
 
+@Cache.memoize()
 def expand_labels(label_image, spacing=None):
     """Expand labels in label image by ``distance`` pixels without overlapping.
 
@@ -78,18 +80,12 @@ def expand_labels(label_image, spacing=None):
            [2, 3, 3, 0]])
     """
 
-    nearest_label_coords = distance_transform_edt(
-        label_image == 0,return_distances=False, return_indices=True, sampling=spacing
-    )
-    
+    nearest_label_coords = distance_transform_edt(label_image == 0, return_distances=False, return_indices=True, sampling=spacing)
+
     # build the coordinates to find nearest labels,
     # in contrast to [1] this implementation supports label arrays
     # of any dimension
-    masked_nearest_label_coords = [
-        dimension_indices
-        for dimension_indices in nearest_label_coords
-    ]
+    masked_nearest_label_coords = [dimension_indices for dimension_indices in nearest_label_coords]
     nearest_labels = label_image[tuple(masked_nearest_label_coords)]
-    
-    return nearest_labels
 
+    return nearest_labels

@@ -1,6 +1,11 @@
 import numpy as np
 from .roi import one_roi
-def find_binary_boundary(binary_img,mode='thick',connectivity=1):
+from scipy.ndimage import distance_transform_edt, generate_binary_structure, binary_erosion, binary_dilation
+from ..common import Cache
+
+
+@Cache.memoize()
+def find_binary_boundary(binary_img, mode='thick'):
     """Return bool array where boundaries between labeled regions are True.
     Parameters
     ----------
@@ -35,28 +40,31 @@ def find_binary_boundary(binary_img,mode='thick',connectivity=1):
         inserted in between all other pairs of pixels).
 
     """
-    result=np.zeros(binary_img.shape)
-    binary_img=np.array(binary_img,bool)
+    connectivity = 1
+    if binary_img.shape[2]==1:
+        binary_img=binary_img[...,0]
+    result = np.zeros(binary_img.shape, bool)
+    binary_img = np.array(binary_img, bool)
 
-    trimed_idx=one_roi(binary_img,margin=2,return_index=True)
-    binary_img=binary_img[trimed_idx]
-    
+    trimed_idx = one_roi(binary_img, margin=2, return_index=True)
+    binary_img = binary_img[trimed_idx]
+
     ndim = binary_img.ndim
-    footprint = generate_binary_structure(ndim, connectivity)    
-    
-    if mode=='inner':
-        ero=binary_erosion(binary_img, footprint)
-        boundaries=binary_img&(~ero)
+    footprint = generate_binary_structure(ndim, connectivity)
+
+    if mode == 'inner':
+        ero = binary_erosion(binary_img, footprint)
+        boundaries = binary_img & (~ero)
     elif mode == 'outer':
-        dil=binary_dilation(binary_img, footprint)
-        boundaries = (~binary_img)&dil
-    elif mode =='thick':
-        dil=binary_dilation(binary_img, footprint)
-        ero=binary_erosion(binary_img, footprint)
-        boundaries = dil^ero
+        dil = binary_dilation(binary_img, footprint)
+        boundaries = (~binary_img) & dil
+    elif mode == 'thick':
+        dil = binary_dilation(binary_img, footprint)
+        ero = binary_erosion(binary_img, footprint)
+        boundaries = dil ^ ero
     else:
-        raise Error(f'not supported mode {mode}')
-    result[trimed_idx]=boundaries
+        raise Exception(f'not supported mode {mode}')
+    result[trimed_idx] = boundaries
+    if result.ndim==2:
+        result=result.reshape(result.shape[0],result.shape[1],1)
     return result
-    
-        

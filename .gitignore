@@ -1,3 +1,16 @@
+*.pkl 
+
+manual_in/ 
+tmp/
+alg_out/
+datasets/
+origdata/
+precompute/
+results/
+js/
+a/
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
