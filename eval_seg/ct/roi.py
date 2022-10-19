@@ -22,7 +22,8 @@ def ct_roi(img, keepRatio=True):
     return idx
 
 
-def segment_roi(segments, margin=15, wh_ratio=1, mindim=[50, 50, -1]):
+def segment_roi(segments, margin=10, wh_ratio=1, mindim=[50, 50, -1]):
+
     imgshape = segments[0].shape
     roi = np.zeros((len(imgshape), 2), int)
     roi[:, 0] = 100000
@@ -59,7 +60,7 @@ def _extend_roi_shape(imgshape, roi, shape):
             roi[dim][:] -= roi[dim][0]
         elif roi[dim][1] > imgshape[dim]:
             roi[dim][:] -= roi[dim][1] - imgshape[dim]
-
+        roi[dim][:] = roi[dim][:].clip(0, imgshape[dim])
     return roi
 
 

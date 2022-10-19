@@ -1,22 +1,26 @@
 from ..common import Object
+import numpy as np
+from collections import defaultdict
+
+
 class MetricABS(Object):
 
-    def __init__(self, num_classes, debug={}):
+    def __init__(self, num_classes: int, debug={}):
         self.num_classes = num_classes
-        self.debug = debug
+        self.debug = defaultdict(str, debug)
         pass
 
-    def set_reference(self, reference, spacing=None):
+    def set_reference(self, reference: np.ndarray, spacing=None, **kwargs):
         self.reference = reference
-        self.spacing = spacing if not (spacing is None) else [1, 1, 1]
-        self.helper = self.calculate_info(reference, self.spacing, self.num_classes)
+        self.spacing = np.array(spacing if not (spacing is None) else [1, 1, 1])
+        self.helper = self.calculate_info(reference, self.spacing, self.num_classes, **kwargs)
 
-    def calculate_info(cls, reference, spacing=None, num_classes=2, **kwargs):
+    def calculate_info(cls, reference: np.ndarray, spacing: np.ndarray = None, num_classes: int = 2, **kwargs):
         pass
 
-    def evaluate_single(self, reference, test, spacing=None):
-        self.set_reference(reference, spacing)
-        return self.evaluate(test)
+    def evaluate_single(self, reference: np.ndarray, test: np.ndarray, spacing: np.ndarray = None, **kwargs):
+        self.set_reference(reference, spacing, **kwargs)
+        return self.evaluate(test, **kwargs)
 
-    def evaluate(self, test):
+    def evaluate(self, test: np.ndarray, **kwargs):
         pass
