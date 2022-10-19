@@ -3,6 +3,7 @@ from . import metrics
 from . import common
 from . import ui
 from . import io
+from . import ui3d
 import importlib
 
 import sys
