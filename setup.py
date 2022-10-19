@@ -7,7 +7,7 @@ setup(name='eval_seg',
       long_description='README.md',
       url='https://github.com/modaresimr/medical-segmentation-evaluation/',
       keywords='evaluation, medical image segmentation',
-      python_requires='>=3.8, <4',
+      python_requires='>=3.7, <4',
       packages=find_packages(include=['eval_seg']),
       install_requires=[
           'pandas==0.23.3',
