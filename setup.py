@@ -10,7 +10,7 @@ setup(name='eval_seg',
       python_requires='>=3.7, <4',
       packages=find_packages(include=['eval_seg']),
       install_requires=[
-          'pandas==0.23.3',
+          'pandas>=0.23.3',
           'numpy>=1.14.5',
           'matplotlib>=2.2.0',
           'nibabel',
