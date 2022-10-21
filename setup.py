@@ -12,7 +12,7 @@ setup(name='eval_seg',
       url='https://github.com/modaresimr/medical-segmentation-evaluation/',
       keywords='evaluation, medical image segmentation',
       python_requires='>=3.7, <4',
-      package_dir={"": "eval_seg"}
+      package_dir={"": "eval_seg"},
       packages=find_packages(where="eval_seg"),
       namespace_packages=[],
       zip_safe=False,
