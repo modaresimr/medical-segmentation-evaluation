@@ -27,7 +27,7 @@ class Dataset:
         return get_file(self.dataset_info[GT][f'{id}'])
 
     def get_prediction(self, method, id):
-        return get_file(self.dataset_info[PREDS][method][f'{id}.nii'])
+        return get_file(self.dataset_info[PREDS][method][f'{id}'])
 
     def get_prediction_methods(self):
         return list(self.dataset_info[PREDS].keys())
